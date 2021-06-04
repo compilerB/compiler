@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lex.h"
+#include<cstring>
+#include<ctype.h>
+#define strMember(ch, set) (strchr(set, ch) != NULL)
 FILE *fp_in, *fp_out;
 
-/*** 0601版 錯誤則跳出  ***/
+/*** 0601? ?????  ***/
 
 // char UNKNOWN[] = "else case";
 char End[] = {13,10};
@@ -18,7 +21,6 @@ char Rparen[] = ")";
 char Space[] = " ";
 
 int parencount=0;
-
 
 typedef struct node
 {
@@ -36,9 +38,80 @@ typedef struct Node
     struct Node *prev;
 } Node;
 
+void listdivide(Node *head_parser)
+{
+	
+	Node *process;
+	Node *temp;
+	
+	process = NULL;
+	temp = NULL;
+	
+	Node *firstn_parser;
+	firstn_parser = NULL;
+	Node *h_parser = (Node *)malloc(sizeof(Node));
+	h_parser->next = NULL;
+	h_parser->prev = NULL;
+	 
+	if(head_parser == NULL)
+	{
+		printf("Warning: There is nothing!!");
+	}
+	
+	process = head_parser;
+	
+	firstn_parser = h_parser;
+
+	while(process != NULL)
+	{
+		while(process->data != "\n")
+		{
+			if(process->token == 10)
+			{		
+				process = process->next;
+			}
+			else
+			{				
+				h_parser->next = (Node *)malloc(sizeof(Node));
+				h_parser = h_parser->next;
+				strcpy(h_parser->data, process->data);
+				h_parser->token = process->token;			
+				h_parser->next = NULL;
+				process = process->next;				
+				printf("data:%s\n", h_parser->data);
+				printf("token:%d\n", h_parser->token);
+			}						
+		}
+		if(process->token == END)
+		{			
+			h_parser->next = (Node *)malloc(sizeof(Node));
+			h_parser = h_parser->next;
+			strcpy(h_parser->data, process->data);
+			h_parser->token = process->token;
+			h_parser->next = NULL;
+			process = process->next;
+			printf("data:%s\n", h_parser->data);
+			printf("token:%d\n", h_parser->token);
+		}
+		//**********************parse(firstn_parser->next);*********************
+		h_parser = firstn_parser->next;
+		while(h_parser->next != NULL)
+		{
+			temp = h_parser->next;
+			free(h_parser);
+			h_parser = temp;
+			temp = NULL;
+		}
+		free(h_parser);
+		h_parser = firstn_parser;
+	}
+	head_parser = NULL;
+	process = NULL;
+}
+
 void parsing(Node *current);
 
-void insert(node *current, char ch) //加入字元
+void insert(node *current, char ch) //????
 {
     while(current->next != NULL)
     {
@@ -51,7 +124,7 @@ void insert(node *current, char ch) //加入字元
     current->next = NULL;
 }
 
-Node *insert_N(Node *current, char ch[], Token token)  //加入字元
+Node *insert_N(Node *current, char ch[], Token token)  //????
 {
     while(current->next != NULL)
     {
@@ -67,7 +140,7 @@ Node *insert_N(Node *current, char ch[], Token token)  //加入字元
 }
 
 
-void print(node *current)   //將所有linked list 列印出來，用於檢查
+void print(node *current)   //???linked list ????,????
 {
     while(current != NULL)
     {
@@ -76,7 +149,7 @@ void print(node *current)   //將所有linked list 列印出來，用於檢查
     }
 }
 
-void print_N(Node *current)   //將所有linked list 列印出來，用於檢查
+void print_N(Node *current)   //???linked list ????,????
 {
     while(current != NULL)
     {
@@ -110,7 +183,7 @@ void delete_SPACE(Node *current)
     }
 }
 
-Token getToken(char c)//取得Token
+Token getToken(char c)//??Token
 {
     if(strMember(c, Int))
         return INT;
@@ -146,21 +219,21 @@ Token getToken(char c)//取得Token
 
 void lexer(node *current,Node *head_N)
 {
-    Token PreToken=NUL;   //前一個字元的Token
-    Token CurToken=NUL;   //當前字元的Token
-    Node *temp;           //暫存現在加入的點
-    char tempstr[20]="";  //暫存字串的陣列
-    char zerostr[20]="";  //清空暫存字串用的陣列
-    char cur_char[1];     //暫存當前字元的陣列
+    Token PreToken=NUL;   //??????Token
+    Token CurToken=NUL;   //?????Token
+    Node *temp;           //????????
+    char tempstr[20]="";  //???????
+    char zerostr[20]="";  //??????????
+    char cur_char[1];     //?????????
 
-    while (current != NULL)  //儲存讀入字元的Linked List節點不為空
+    while (current != NULL)  //???????Linked List?????
     {
-        cur_char[0]=current->ch;          //從儲存讀入字元的Linked List讀字元出來
-        CurToken=getToken(cur_char[0]);   //取得當前字元的Token
+        cur_char[0]=current->ch;          //????????Linked List?????
+        CurToken=getToken(cur_char[0]);   //???????Token
 
-        if(PreToken==NUL)        //前一個Token是空的代表是第一個
+        if(PreToken==NUL)        //???Token?????????
         {
-            //第一個不能是(數字、+-*/、=)
+            //??????(???+-*/?=)
             if(CurToken == 2)
             {
                 printf("Can't start with a number\n");
@@ -182,9 +255,9 @@ void lexer(node *current,Node *head_N)
                 exit(0);
 //                printf("EXIT\n");
             }
-            strcat(tempstr,cur_char);   //將這個字元先放進Temp裡面
-            PreToken = CurToken;        //當前字元Token存入前一個Token
-            CurToken = NUL;             //當前字元Token清空
+            strcat(tempstr,cur_char);   //????????Temp??
+            PreToken = CurToken;        //????Token?????Token
+            CurToken = NUL;             //????Token??
         }
         else //P.T.!=NULL
         {
@@ -208,7 +281,7 @@ void lexer(node *current,Node *head_N)
                     exit(0);
 //                    printf("EXIT\n");
                 }
-                else if(CurToken==7||CurToken==8)  //左括、右括分開儲存
+                else if(CurToken==7||CurToken==8)  //?????????
                 {
                     temp = insert_N(head_N,tempstr,PreToken);
                     parsing(temp);
@@ -220,7 +293,7 @@ void lexer(node *current,Node *head_N)
                     strcat(tempstr,cur_char);
                 }
             }
-            else if(PreToken == 3 && CurToken == 2)  //變數以英文開頭，後面可以接數字
+            else if(PreToken == 3 && CurToken == 2)  //???????,???????
             {
                 CurToken = PreToken;
                 strcat(tempstr,cur_char);
@@ -237,7 +310,7 @@ void lexer(node *current,Node *head_N)
         }
         current = current->next;
     }
-    //需要多跑一次，處理最後一個字元
+    //??????,????????
     if(PreToken == CurToken)
     {
         if(CurToken == 4||CurToken==5)  //eg. ++ -- +- -+ ** // */ /*
@@ -254,7 +327,7 @@ void lexer(node *current,Node *head_N)
             exit(0);
 //            printf("EXIT\n");
         }
-        else if(CurToken==7||CurToken==8) //左括、右括分開儲存
+        else if(CurToken==7||CurToken==8) //?????????
         {
             temp = insert_N(head_N,tempstr,PreToken);
             parsing(temp);
@@ -266,7 +339,7 @@ void lexer(node *current,Node *head_N)
             strcat(tempstr,cur_char);
         }
     }
-    else if(PreToken == 3 && CurToken == 2) //變數以英文開頭，後面可以接數字
+    else if(PreToken == 3 && CurToken == 2) //???????,???????
     {
         CurToken = PreToken;
         strcat(tempstr,cur_char);
@@ -284,14 +357,14 @@ void lexer(node *current,Node *head_N)
 
 void parsing(Node *current)
 {
-    bool assigflag=false;   //assign flag，每一行只能有一個等於
+    bool assigflag=false;   //assign flag,??????????
     Node *temp;
-    temp=current->prev;     //看前一個字串的Token
-    if(temp->token==10)     //遇到空白再往前看
+    temp=current->prev;     //???????Token
+    if(temp->token==10)     //????????
     {
         temp=temp->prev;
     }
-    switch(current->token)  //根據當前存入之字串Token，判斷是否合法
+    switch(current->token)  //?????????Token,??????
     {
     case 0: //UNKNOWN
 
@@ -320,7 +393,7 @@ void parsing(Node *current)
 //            printf("EXIT\n");
 
         }
-        if(parencount!=0)  //括號不成對
+        if(parencount!=0)  //?????
         {
             printf("Unpaired Parentheses Error\n");
             exit(0);
@@ -346,7 +419,7 @@ void parsing(Node *current)
             exit(0);
 //            printf("EXIT\n");
         }
-        else if(temp->token==1)  //每行開頭不能是數字
+        else if(temp->token==1)  //?????????
         {
             printf("Can't start with a number\n");
             printf("%s\n",current->data);
@@ -389,7 +462,7 @@ void parsing(Node *current)
             exit(0);
 //            printf("EXIT\n");
         }
-        else if(temp->token==1)   //每行開頭不能是 +-
+        else if(temp->token==1)   //??????? +-
         {
             printf("Can't start with an operator\n");
             printf("%s\n",current->data);
@@ -421,7 +494,7 @@ void parsing(Node *current)
             exit(0);
 //            printf("EXIT\n");
         }
-        else if(temp->token==1)  //每行開頭不能是 */
+        else if(temp->token==1)  //??????? */
         {
             printf("Can't start with an operator\n");
             printf("%s\n",current->data);
@@ -453,7 +526,7 @@ void parsing(Node *current)
             exit(0);
 //            printf("EXIT\n");
         }
-        else if(temp->token==1) //每行開頭不能是 =
+        else if(temp->token==1) //??????? =
         {
             printf("Can't start with an assign\n");
             printf("%s\n",current->data);
@@ -484,7 +557,7 @@ void parsing(Node *current)
     case 8: //RPAREN
 
         parencount--;
-        if(parencount<0) //判斷括號不成對
+        if(parencount<0) //???????
         {
             printf("Extra Right Parentheses\n");
             exit(0);
@@ -546,7 +619,7 @@ int main(int argc, char *argv[])
 
     while((ch = getc(fp_in)) != EOF)
     {
-//      if(ch != '\n')      //決定是否要存換行
+//      if(ch != '\n')      //????????
         insert(head,ch);
     }
     insert(head,'\n');
@@ -557,6 +630,8 @@ int main(int argc, char *argv[])
     delete_SPACE(head_N->next);
     printf("\n**********\n");
     print_N(head_N->next);
+    
+    listdivide(head_N->next);
 
     fclose(fp_in);
     fclose(fp_out);
