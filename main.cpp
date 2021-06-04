@@ -628,7 +628,7 @@ int main(int argc, char *argv[])
     // print(head->next);
     lexer(head->next,head_N);
 
-    delete_SPACE(head_N->next);
+    //delete_SPACE(head_N->next);
     printf("\n**********\n");
     print_N(head_N->next);
     
