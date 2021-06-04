@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lex.h"
+#include<cstring>
+#include<ctype.h>
+#define strMember(ch, set) (strchr(set, ch) != NULL)
 FILE *fp_in, *fp_out;
 
 /*** 0601版 錯誤則跳出  ***/
@@ -35,6 +38,77 @@ typedef struct Node
     struct Node *next;
     struct Node *prev;
 } Node;
+
+void listdivide(Node *head_parser)
+{
+	
+	Node *process;
+	Node *temp;
+	
+	process = NULL;
+	temp = NULL;
+	
+	Node *firstn_parser;
+	firstn_parser = NULL;
+	Node *h_parser = (Node *)malloc(sizeof(Node));
+	h_parser->next = NULL;
+	h_parser->prev = NULL;
+	 
+	if(head_parser == NULL)
+	{
+		printf("Warning: There is nothing!!");
+	}
+	
+	process = head_parser;
+	
+	firstn_parser = h_parser;
+
+	while(process != NULL)
+	{
+		while(process->data != "\n")
+		{
+			if(process->token == 10)
+			{		
+				process = process->next;
+			}
+			else
+			{				
+				h_parser->next = (Node *)malloc(sizeof(Node));
+				h_parser = h_parser->next;
+				strcpy(h_parser->data, process->data);
+				h_parser->token = process->token;			
+				h_parser->next = NULL;
+				process = process->next;				
+				printf("data:%s\n", h_parser->data);
+				printf("token:%d\n", h_parser->token);
+			}						
+		}
+		if(process->token == END)
+		{			
+			h_parser->next = (Node *)malloc(sizeof(Node));
+			h_parser = h_parser->next;
+			strcpy(h_parser->data, process->data);
+			h_parser->token = process->token;
+			h_parser->next = NULL;
+			process = process->next;
+			printf("data:%s\n", h_parser->data);
+			printf("token:%d\n", h_parser->token);
+		}
+		//**********************parse(firstn_parser->next);*********************
+		h_parser = firstn_parser->next;
+		while(h_parser->next != NULL)
+		{
+			temp = h_parser->next;
+			free(h_parser);
+			h_parser = temp;
+			temp = NULL;
+		}
+		free(h_parser);
+		h_parser = firstn_parser;
+	}
+	head_parser = NULL;
+	process = NULL;
+}
 
 void parsing(Node *current);
 
@@ -557,6 +631,8 @@ int main(int argc, char *argv[])
     delete_SPACE(head_N->next);
     printf("\n**********\n");
     print_N(head_N->next);
+    
+    listdivide(head_N->next);
 
     fclose(fp_in);
     fclose(fp_out);
