@@ -4,5 +4,6 @@
 typedef enum {
 UNKNOWN, END, INT, VAR, ADDSUB, MULDIV, ASSIGN, LPAREN, RPAREN, NUL, SPACE
 } Token;
+#define strMember(ch, set) (strchr(set, ch) != NULL)
 
 #endif 
