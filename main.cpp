@@ -330,8 +330,11 @@ void lexer(node *current,Node *head_N)
             }
             else
             {
-                temp = insert_N(head_N,tempstr,PreToken);
-                parsing(temp);
+                if(PreToken!=10)
+                {
+                    temp = insert_N(head_N,tempstr,PreToken);
+                    parsing(temp);
+                }
                 strcpy(tempstr,zerostr);
                 strcat(tempstr,cur_char);
             }
@@ -373,8 +376,11 @@ void lexer(node *current,Node *head_N)
     }
     else
     {
-        temp = insert_N(head_N,tempstr,PreToken);
-        parsing(temp);
+        if(PreToken!=10)
+        {
+            temp = insert_N(head_N,tempstr,PreToken);
+            parsing(temp);
+        }
         strcpy(tempstr,zerostr);
         strcat(tempstr,cur_char);
     }
