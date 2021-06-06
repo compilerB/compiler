@@ -17,8 +17,8 @@ UNKNOWN := else case
 SPACE := 空白  
 NUL := 空值  
 
-*syntax。
-stat -> END | exp END。
+*syntax  
+stat -> END | exp END  
 exp -> VAR ASSIGN term。
 term -> op ADDSUB term | factor。
 factor -> op MULDIV term | base。
