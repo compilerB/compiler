@@ -622,10 +622,10 @@ int main(int argc, char *argv[])
         printf("Warning: Nothing in input file!!");
         exit(0);
     }
-    while((ch = getc(fp_in)) != EOF)
-    {
-        insert(head,ch);
-    }
+    else
+	{
+    	insert(head,ch);
+	}
     insert(head,'\n');
     lexer(head->next,head_N);
 
