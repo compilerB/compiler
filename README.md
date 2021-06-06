@@ -1,28 +1,28 @@
 整數四則運算 syntax
 
 包含 
-1. +, -, *, /
-2. 變數、整數
+1. +, -, *, /。
+2. 變數、整數。
 
-":="此符號為"定義為"
-"ADDSUB"，為"+","-"
-"MULDIV"，為"*","/"
-END := 一個句子的結束
-INT := 整數
-VAR := 變數
-ASSIGN := "="
-LPAREN := "("
-RPAREN := ")"
-UNKNOWN := else case
-SPACE := 空白
-NUL := 空值
+":="此符號為"定義為"。
+"ADDSUB"，為"+","-"。
+"MULDIV"，為"*","/"。
+END := 一個句子的結束。
+INT := 整數。
+VAR := 變數。
+ASSIGN := "="。。。
+LPAREN := "("。
+RPAREN := ")"。。
+UNKNOWN := else case。
+SPACE := 空白。
+NUL := 空值。
 
-*syntax
-stat -> END | exp END
-exp -> VAR ASSIGN term
-term -> op ADDSUB term | factor
-factor -> op MULDIV term | base
-base -> LPAREN term RPAREN | op
+*syntax。
+stat -> END | exp END。
+exp -> VAR ASSIGN term。
+term -> op ADDSUB term | factor。
+factor -> op MULDIV term | base。
+base -> LPAREN term RPAREN | op。
 op -> VAR | INT
 ************************************
 First Set
