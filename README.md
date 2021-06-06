@@ -5,17 +5,17 @@
 2. 變數、整數  
 
 ":="此符號為"定義為"  
-"ADDSUB"，為"+","-"。
-"MULDIV"，為"*","/"。
-END := 一個句子的結束。
-INT := 整數。
-VAR := 變數。
-ASSIGN := "="。。。
-LPAREN := "("。
-RPAREN := ")"。。
-UNKNOWN := else case。
-SPACE := 空白。
-NUL := 空值。
+"ADDSUB"，為"+","-"  
+"MULDIV"，為"*","/"  
+END := 一個句子的結束  
+INT := 整數  
+VAR := 變數  
+ASSIGN := "="  
+LPAREN := "("  
+RPAREN := ")"  
+UNKNOWN := else case  
+SPACE := 空白  
+NUL := 空值  
 
 *syntax。
 stat -> END | exp END。
