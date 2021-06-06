@@ -623,9 +623,9 @@ int main(int argc, char *argv[])
         exit(0);
     }
     else
-	{
+    {
     	insert(head,ch);
-	}
+    }
     insert(head,'\n');
     lexer(head->next,head_N);
 
