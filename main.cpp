@@ -6,7 +6,7 @@
 #include "lex.h"
 FILE *fp_in, *fp_out;
 
-/*** 0605?? ***/
+/*** 0605ver  ***/
 
 char End[] = {13,10};
 char Int[] = "|0|1|2|3|4|5|6|7|8|9|";
@@ -622,11 +622,14 @@ int main(int argc, char *argv[])
         printf("Warning: Nothing in input file!!");
         exit(0);
     }
-	else
-	{
-    	insert(head,ch);
-	}
-    
+    else
+    {
+        insert(head,ch);
+    }
+    while((ch = getc(fp_in)) != EOF)
+    {
+        insert(head,ch);
+    }
     insert(head,'\n');
     lexer(head->next,head_N);
 
