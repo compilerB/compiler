@@ -1,9 +1,9 @@
 整數四則運算 syntax
-
+**************
 包含 
 1. +, -, *, / 
 2. 變數、整數  
-
+*****************************
 ":="此符號為"定義為"  
 "ADDSUB"，為"+","-"  
 "MULDIV"，為"*","/"  
@@ -16,7 +16,7 @@ RPAREN := ")"
 UNKNOWN := else case  
 SPACE := 空白  
 NUL := 空值  
-
+********
 *syntax  
 stat -> END | exp END  
 exp -> VAR ASSIGN term  
