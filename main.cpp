@@ -108,7 +108,7 @@ void listdivide(Node *head_parser)
     process = NULL;
 }
 
-void parsing(Node *current);
+void preParsing(Node *current);
 
 void insert(node *current, char ch)
 {
@@ -314,7 +314,7 @@ void lexer(node *current,Node *head_N)
                 else if(CurToken==7||CurToken==8)
                 {
                     temp = insert_N(head_N,tempstr,PreToken);
-                    parsing(temp);
+                    preParsing(temp);
                     strcpy(tempstr,zerostr);
                     strcat(tempstr,cur_char);
                 }
@@ -333,7 +333,7 @@ void lexer(node *current,Node *head_N)
                 if(PreToken!=10)
                 {
                     temp = insert_N(head_N,tempstr,PreToken);
-                    parsing(temp);
+                    preParsing(temp);
                 }
                 strcpy(tempstr,zerostr);
                 strcat(tempstr,cur_char);
@@ -360,7 +360,7 @@ void lexer(node *current,Node *head_N)
         else if(CurToken==7||CurToken==8)
         {
             temp = insert_N(head_N,tempstr,PreToken);
-            parsing(temp);
+            preParsing(temp);
             strcpy(tempstr,zerostr);
             strcat(tempstr,cur_char);
         }
@@ -379,7 +379,7 @@ void lexer(node *current,Node *head_N)
         if(PreToken!=10)
         {
             temp = insert_N(head_N,tempstr,PreToken);
-            parsing(temp);
+            preParsing(temp);
         }
         strcpy(tempstr,zerostr);
         strcat(tempstr,cur_char);
@@ -388,7 +388,7 @@ void lexer(node *current,Node *head_N)
     CurToken=NUL;
 }
 
-void parsing(Node *current)
+void preParsing(Node *current)
 {
     bool assigflag=false;
     Node *temp;
