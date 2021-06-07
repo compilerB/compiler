@@ -18,7 +18,7 @@ char Lparen[] = "(";
 char Rparen[] = ")";
 char Space[] = " ";
 
-int parencount=0;
+int parenCount=0;
 
 
 typedef struct node
@@ -112,7 +112,7 @@ void preParsing(Node *current);
 
 void insert(node *current, char ch)
 {
-    while(current->next != NULL)
+    while (current->next != NULL)
     {
         current = current->next;
     }
@@ -125,7 +125,7 @@ void insert(node *current, char ch)
 
 Node *insert_N(Node *current, char ch[], Token token)
 {
-    while(current->next != NULL)
+    while (current->next != NULL)
     {
         current = current->next;
     }
@@ -141,7 +141,7 @@ Node *insert_N(Node *current, char ch[], Token token)
 
 void print(node *current)
 {
-    while(current != NULL)
+    while (current != NULL)
     {
         printf("c",current->ch);
         current = current->next;
@@ -150,43 +150,47 @@ void print(node *current)
 
 void print_N(Node *current)
 {
-    while(current != NULL)
+    while (current != NULL)
     {
-        if(current->token == 1)
+        if (current->token == 1)
+        {
             printf("String = %s , Token = %d\n",current->data,current->token);
+        }
         else
+        {
             printf("String = %s , Token = %d\n",current->data,current->token);
+        }
         current = current->next;
     }
 }
 
 Token getToken(char c)
 {
-    if(strMember(c, Int))
+    if (strMember(c, Int))
         return INT;
 
-    else if(strMember(c, Var))
+    else if (strMember(c, Var))
         return VAR;
 
-    else if(strMember(c, Addsub))
+    else if (strMember(c, Addsub))
         return ADDSUB;
 
-    else if(strMember(c, Muldiv))
+    else if (strMember(c, Muldiv))
         return MULDIV;
 
-    else if(strMember(c, Assign))
+    else if (strMember(c, Assign))
         return ASSIGN;
 
-    else if(strMember(c, Lparen))
+    else if (strMember(c, Lparen))
         return LPAREN;
 
-    else if(strMember(c, Rparen))
+    else if (strMember(c, Rparen))
         return RPAREN;
 
-    else if(strMember(c, Space))
+    else if (strMember(c, Space))
         return SPACE;
 
-    else if(strMember(c, End))
+    else if (strMember(c, End))
         return END;
 
     else
@@ -259,141 +263,142 @@ void printError(int n)
 
 void lexer(node *current,Node *head_N)
 {
-    Token PreToken=NUL;
-    Token CurToken=NUL;
+    Token preToken=NUL;
+    Token curToken=NUL;
     Node *temp;
-    char tempstr[20]="";
-    char zerostr[20]="";
-    char cur_char[1];
+    char tempStr[20]="";
+    char zeroStr[20]="";
+    char curChar[1];
 
     while (current != NULL)
     {
-        cur_char[0]=current->ch;
-        CurToken=getToken(cur_char[0]);
+        curChar[0]=current->ch;
+        curToken=getToken(curChar[0]);
 
-        if(PreToken==NUL)
+        if (preToken==NUL)
         {
-            if(CurToken == 2)
+            if (curToken == 2)
             {
                 printError(0);
-                printf("%s\n",cur_char);
+                printf("%s\n",curChar);
                 exit(0);
             }
-            else if(CurToken == 4||CurToken==5)
+            else if (curToken == 4||curToken==5)
             {
                 printError(1);
-                printf("%s\n",cur_char);
+                printf("%s\n",curChar);
                 exit(0);
             }
-            else if(CurToken == 6)
+            else if (curToken == 6)
             {
                 printError(2);
-                printf("%s\n",cur_char);
+                printf("%s\n",curChar);
                 exit(0);
             }
-            strcat(tempstr,cur_char);
-            PreToken = CurToken;
-            CurToken = NUL;
+            strcat(tempStr,curChar);
+            preToken = curToken;
+            curToken = NUL;
         }
         else
         {
-            if(PreToken == CurToken)
+            if (preToken == curToken)
             {
-                if(CurToken == 4||CurToken==5)
+                if (curToken == 4||curToken==5)
                 {
                     printError(3);
-                    printf("%s %s\n",tempstr,cur_char);
+                    printf("%s %s\n",tempStr,curChar);
                     exit(0);
                 }
-                else if(CurToken==6)
+                else if (curToken==6)
                 {
                     printError(4);
-                    printf("%s %s\n",tempstr,cur_char);
+                    printf("%s %s\n",tempStr,curChar);
                     exit(0);
                 }
-                else if(CurToken==7||CurToken==8)
+                else if (curToken==7||curToken==8)
                 {
-                    temp = insert_N(head_N,tempstr,PreToken);
+                    temp = insert_N(head_N,tempStr,preToken);
                     preParsing(temp);
-                    strcpy(tempstr,zerostr);
-                    strcat(tempstr,cur_char);
+                    strcpy(tempStr,zeroStr);
+                    strcat(tempStr,curChar);
                 }
                 else
                 {
-                    strcat(tempstr,cur_char);
+                    strcat(tempStr,curChar);
                 }
             }
-            else if(PreToken == 3 && CurToken == 2)
+            else if (preToken == 3 && curToken == 2)
             {
-                CurToken = PreToken;
-                strcat(tempstr,cur_char);
+                curToken = preToken;
+                strcat(tempStr,curChar);
             }
             else
             {
-                if(PreToken!=10)
+                if (preToken!=10)
                 {
-                    temp = insert_N(head_N,tempstr,PreToken);
+                    temp = insert_N(head_N,tempStr,preToken);
                     preParsing(temp);
                 }
-                strcpy(tempstr,zerostr);
-                strcat(tempstr,cur_char);
+                strcpy(tempStr,zeroStr);
+                strcat(tempStr,curChar);
             }
-            PreToken=CurToken;
-            CurToken=NUL;
+            preToken=curToken;
+            curToken=NUL;
         }
         current = current->next;
     }
-    if(PreToken == CurToken)
+    if (preToken == curToken)
     {
-        if(CurToken == 4||CurToken==5)
+        if (curToken == 4||curToken==5)
         {
             printError(3);
-            printf("%s %s\n",tempstr,cur_char);
+            printf("%s %s\n",tempStr,curChar);
             exit(0);
         }
-        else if(CurToken==6)
+        else if (curToken==6)
         {
             printError(4);
-            printf("%s %s\n",tempstr,cur_char);
+            printf("%s %s\n",tempStr,curChar);
             exit(0);
         }
-        else if(CurToken==7||CurToken==8)
+        else if (curToken==7||curToken==8)
         {
-            temp = insert_N(head_N,tempstr,PreToken);
+            temp = insert_N(head_N,tempStr,preToken);
             preParsing(temp);
-            strcpy(tempstr,zerostr);
-            strcat(tempstr,cur_char);
+            strcpy(tempStr,zeroStr);
+            strcat(tempStr,curChar);
         }
         else
         {
-            strcat(tempstr,cur_char);
+            strcat(tempStr,curChar);
         }
     }
-    else if(PreToken == 3 && CurToken == 2)
+    else if (preToken == 3 && curToken == 2)
     {
-        CurToken = PreToken;
-        strcat(tempstr,cur_char);
+        curToken = preToken;
+        strcat(tempStr,curChar);
     }
     else
     {
-        if(PreToken!=10)
+        if (preToken!=10)
         {
-            temp = insert_N(head_N,tempstr,PreToken);
+            temp = insert_N(head_N,tempStr,preToken);
             preParsing(temp);
         }
-        strcpy(tempstr,zerostr);
-        strcat(tempstr,cur_char);
+        strcpy(tempStr,zeroStr);
+        strcat(tempStr,curChar);
     }
-    PreToken=CurToken;
-    CurToken=NUL;
+    preToken=curToken;
+    curToken=NUL;
 }
 
 void preParsing(Node *current)
 {
-    bool assigflag=false;
+    bool assignFlag=false;
     Node *temp;
     temp=current->prev;
-    if(temp->token==10)
+
+    if (temp->token==10)
     {
         temp=temp->prev;
     }
@@ -420,30 +425,30 @@ void preParsing(Node *current)
             printf("%s\n",temp->data);
             exit(0);
         }
-        if(parencount!=0)
+        if (parenCount!=0)
         {
             printError(8);
             exit(0);
         }
-        assigflag=false;
-        parencount = 0;
+        assignFlag=false;
+        parenCount = 0;
         break;
 
     case 2: //INT
 
-        if(temp->token==2||temp->token ==3)
+        if (temp->token==2||temp->token ==3)
         {
             printError(9);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==8)
+        else if (temp->token==8)
         {
             printError(10);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==1)
+        else if (temp->token==1)
         {
             printError(0);
             printf("%s\n",current->data);
@@ -453,13 +458,13 @@ void preParsing(Node *current)
 
     case 3: //VAR
 
-        if(temp->token==2||temp->token ==3)
+        if (temp->token==2||temp->token ==3)
         {
             printError(9);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==8)
+        else if (temp->token==8)
         {
             printError(10);
             printf("%s %s\n",temp->data,current->data);
@@ -469,25 +474,25 @@ void preParsing(Node *current)
 
     case 4: //ADDSUB
 
-        if(temp->token== 7)
+        if (temp->token== 7)
         {
             printError(11);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token == 5)
+        else if (temp->token == 5)
         {
             printError(3);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==1)
+        else if (temp->token==1)
         {
             printError(1);
             printf("%s\n",current->data);
             exit(0);
         }
-        else if(temp->token == 6)
+        else if (temp->token == 6)
         {
             printError(12);
             printf("%s %s\n",temp->data,current->data);
@@ -497,25 +502,25 @@ void preParsing(Node *current)
 
     case 5: //MULDIV
 
-        if(temp->token==7)
+        if (temp->token==7)
         {
             printError(11);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==4)
+        else if (temp->token==4)
         {
             printError(3);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==1)
+        else if (temp->token==1)
         {
             printError(1);
             printf("%s\n",current->data);
             exit(0);
         }
-        else if(temp->token == 6)
+        else if (temp->token == 6)
         {
             printError(12);
             printf("%s %s\n",temp->data,current->data);
@@ -525,64 +530,64 @@ void preParsing(Node *current)
 
     case 6: //ASSIGN
 
-        if(temp->token==7)
+        if (temp->token==7)
         {
             printError(13);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==4||temp->token ==5)
+        else if (temp->token==4||temp->token ==5)
         {
             printError(14);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==1)
+        else if (temp->token==1)
         {
             printError(2);
             printf("%s\n",current->data);
             exit(0);
         }
-        if(assigflag)
+        if (assignFlag)
         {
             printError(4);
             exit(0);
         }
-        assigflag=true;
+        assignFlag=true;
         break;
 
     case 7: //LPAREN
 
-        if(temp->token==2||temp->token ==3)
+        if (temp->token==2||temp->token ==3)
         {
             printError(10);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        parencount++;
+        parenCount++;
         break;
 
     case 8: //RPAREN
 
-        parencount--;
-        if(parencount<0)
+        parenCount--;
+        if (parenCount<0)
         {
             printError(15);
             exit(0);
         }
-        if(temp->token==4||temp->token ==5)
+        if (temp->token==4||temp->token ==5)
         {
             printError(16);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==6)
+        else if (temp->token==6)
         {
             printError(17);
             printf("%s %s\n",temp->data,current->data);
             exit(0);
         }
-        else if(temp->token==7)
+        else if (temp->token==7)
         {
             printError(18);
             printf("%s %s\n",temp->data,current->data);
