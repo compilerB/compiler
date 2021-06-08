@@ -642,7 +642,9 @@ int main(int argc, char *argv[])
     print_N(head_N->next);
 
     listdivide(head_N->next);
-
+    
+    free(head);
+    free(head_N);
     fclose(fp_in);
     fclose(fp_out);
     return 0;
